@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Office Integrator Save Event Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Office Document Editor</h1>
+
+  <!-- Iframe containing the Office Integrator document -->
+  <iframe
+    id="updateIframe"
+    src="https://api.office-integrator.com/writer/officeapi/v1/documents/be3ea5ff8e5c900a04ff8f16b258c18fc1caf84a75146965e2a8f036c16b3eeeef77867024e13f5d675c626b0b312d17cb5aaf50013c81c753373082ad10f26440f5d86adf2c5aa78f8964dcf9a8bd6e072e04f43c2b77ae91a83147a03c26e1/edit"
+    width="800"
+    height="600"
+    frameborder="0">
+  </iframe>
+
+  <!-- A status div to show messages -->
+  <div id="status">Waiting for save event...</div>
+
+  <script type="text/javascript" src="https://js.zohocdn.com/officeplatform/v1/js/common/xdc-1.0.min.js" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript">
+    document.getElementById("updateIframe").onload = function() {
+      console.log(window.location.origin);
+      let test = XDC.setTarget({
+        "origin": "https://api.office-integrator.com",
+        "window": document.getElementById("updateIframe").contentWindow
+      });
+
+      test.receiveMessage("DocumentLoadInProgress", function(data) {
+        console.log("Document is loading:", data);
+      });
+
+      test.receiveMessage("DocumentLoadComplete", function(data) {
+        console.log("Document load complete:", data);
+      });
+
+      test.receiveMessage("SelectionChanged", function(data) {
+        console.log("Selection changed:", data);
+      });
+
+      test.postMessage({
+        "message": "GetAllNamedRanges",
+        "oncomplete": function(data) {
+          console.log("Named Ranges Data:", JSON.stringify(data));
+        },
+        "onexception": function(data) {
+          console.error("Error fetching named ranges:", data);
+        }
+      });
+    };
+
+
+  </script>
+</body>
+</html>
+
