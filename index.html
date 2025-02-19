@@ -47,13 +47,7 @@
 
       test.receiveMessage("DocumentLoadComplete", function(data) {
         console.log("Document load complete:", data);
-      });
-
-      test.receiveMessage("SelectionChanged", function(data) {
-        console.log("Selection changed:", data);
-      });
-
-      test.postMessage({
+         test.postMessage({
         "message": "GetAllNamedRanges",
         "oncomplete": function(data) {
           console.log("Named Ranges Data:", JSON.stringify(data));
@@ -62,6 +56,13 @@
           console.error("Error fetching named ranges:", data);
         }
       });
+      });
+
+      test.receiveMessage("SelectionChanged", function(data) {
+        console.log("Selection changed:", data);
+      });
+
+     
     };
 
 
