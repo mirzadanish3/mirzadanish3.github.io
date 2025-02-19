@@ -47,15 +47,29 @@
 
       test.receiveMessage("DocumentLoadComplete", function(data) {
         console.log("Document load complete:", data);
-         test.postMessage({
-        "message": "GetAllNamedRanges",
-        "oncomplete": function(data) {
-          console.log("Named Ranges Data:", JSON.stringify(data));
-        },
-        "onexception": function(data) {
-          console.error("Error fetching named ranges:", data);
-        }
-      });
+        test.postMessage({
+          "message": "GetAllNamedRanges",
+          "oncomplete": function(data) {
+            console.log("Named Ranges Data:", JSON.stringify(data));
+          },
+          "onexception": function(data) {
+            console.error("Error fetching named ranges:", data);
+          }
+        });
+        test.postMessage ( {
+              "message": "DocumentStats",
+                "oncomplete": function(data) {
+                      console.log(JSON.stringify(data));
+                      // {
+                      // "words": "75",
+                      // "characters": "522",
+                      // "pages": "1"
+                      // }
+              },
+              "onexception": function(data) {
+                      // Handle exception
+              }
+        } );
       });
 
       test.receiveMessage("SelectionChanged", function(data) {
@@ -69,4 +83,3 @@
   </script>
 </body>
 </html>
-
