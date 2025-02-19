@@ -28,10 +28,21 @@
     frameborder="0">
   </iframe>
 
-  <button onclick="insertContent()">Insert Content on Cursor</button>
+  <div style="margin-top: 20px; margin-bottom: 20px;">
+    <button onclick="insertContent()">Insert Content on Cursor</button>
+  </div>
 
-  <!-- A status div to show messages -->
-  <div id="status">Waiting for save event...</div>
+  <div>
+    <label for="input1">Find Text:</label>
+    <input type="text" id="findText" name="input1">
+
+    <label for="input2">Replace Text:</label>
+    <input type="text" id="replaceWith" name="input2">
+
+    <button type="button" onclick="findAndReplace()">Replace</button>
+    <button type="button" onclick="findAndReplaceAll()">Replace All</button>
+</form>
+
 
   <script type="text/javascript" src="https://js.zohocdn.com/officeplatform/v1/js/common/xdc-1.0.min.js" crossorigin="anonymous">
   </script>
@@ -99,6 +110,52 @@
                 }
        },
        "onexception": function(data) {
+            // Handle exception
+       }
+} );
+    }
+
+
+    function findAndReplace(){
+      XDC.postMessage ( {
+        "message": "FindAndReplace",
+        "data": {
+            "findText": document.getElementById('findText').value,
+            "replaceWith": document.getElementById('replaceWith').value, 
+            "isReplaceAll": false
+        },
+        "oncomplete": function(data) {
+                console.log(JSON.stringify(data));
+                if (data.result === 1) {
+                    // Handle Success
+                } else {
+                      // Handle Failure
+                }
+       },
+       "onexception": function(data){
+            // Handle exception
+       }
+} );
+    }
+
+
+    function findAndReplaceAll(){
+      XDC.postMessage ( {
+        "message": "FindAndReplace",
+        "data": {
+            "findText": document.getElementById('findText').value,
+            "replaceWith": document.getElementById('replaceWith').value, 
+            "isReplaceAll": true
+        },
+        "oncomplete": function(data) {
+                console.log(JSON.stringify(data));
+                if (data.result === 1) {
+                    // Handle Success
+                } else {
+                      // Handle Failure
+                }
+       },
+       "onexception": function(data){
             // Handle exception
        }
 } );
