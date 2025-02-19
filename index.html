@@ -28,6 +28,8 @@
     frameborder="0">
   </iframe>
 
+  <button onclick="insertContent()">Insert Content on Cursor</button>
+
   <!-- A status div to show messages -->
   <div id="status">Waiting for save event...</div>
 
@@ -78,6 +80,29 @@
 
      
     };
+
+    function insertContent(){
+      XDC.postMessage ( {
+        "message": "InsertContent",
+        "data": {
+            "content": " Happy Writing!",
+            "contentType": "text", // or HTML
+            "htmlFormat": "SourceFormat", // or DestinationFormat (This data is applicable only when the 'contentType: HTML' and its default value will be 'SourceFormat')
+            "scrollIntoView": true
+        },
+        "oncomplete": function(data) {
+                console.log(JSON.stringify(data));
+                if (data.result === 1) {
+                    // Handle Success
+                } else {
+                      // Handle Failure
+                }
+       },
+       "onexception": function(data) {
+            // Handle exception
+       }
+} );
+    }
 
 
   </script>
